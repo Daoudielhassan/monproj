@@ -1,15 +1,9 @@
-# Pull Official Base Image
-FROM node:latest
-
-# Set Working Directory
+FROM node:14-alpine
 WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY . ./
+RUN npm run build
+EXPOSE 3000
+CMD ["npx", "serve", "-s", "build"]
 
-# Install App Dependencies
-COPY ["package.json", "yarn.lock", "/app/"]
-RUN yarn
-
-# Add App
-COPY [".", "/app"]
-
-# Start App
-CMD ["npm", "build"]
